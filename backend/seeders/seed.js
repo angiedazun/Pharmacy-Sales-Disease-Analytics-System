@@ -1,4 +1,5 @@
-require('dotenv').config({ path: '../.env' });
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') });
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
@@ -8,12 +9,12 @@ const Medicine = require('../models/Medicine');
 const Pharmacy = require('../models/Pharmacy');
 const Sale = require('../models/Sale');
 
-const MONGO_URI = 'mongodb://localhost:27017/pharmacy_analytics_db';
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/pharmacy_analytics_db';
 
 const districts = [
   'Colombo', 'Gampaha', 'Kalutara', 'Kandy', 'Matale',
   'Nuwara Eliya', 'Galle', 'Matara', 'Hambantota', 'Jaffna',
-  'Kilinochchi', 'Mannar', 'Vavuniya', 'Batticaloa', 'Ampara',
+  'Kilinochchi', 'Mannar', 'Vavuniya', 'Mullaitivu', 'Batticaloa', 'Ampara',
   'Trincomalee', 'Kurunegala', 'Puttalam', 'Anuradhapura',
   'Polonnaruwa', 'Badulla', 'Monaragala', 'Ratnapura', 'Kegalle'
 ];
@@ -23,7 +24,7 @@ const provinces = {
   'Kandy': 'Central', 'Matale': 'Central', 'Nuwara Eliya': 'Central',
   'Galle': 'Southern', 'Matara': 'Southern', 'Hambantota': 'Southern',
   'Jaffna': 'Northern', 'Kilinochchi': 'Northern', 'Mannar': 'Northern',
-  'Vavuniya': 'Northern', 'Batticaloa': 'Eastern', 'Ampara': 'Eastern',
+  'Vavuniya': 'Northern', 'Mullaitivu': 'Northern', 'Batticaloa': 'Eastern', 'Ampara': 'Eastern',
   'Trincomalee': 'Eastern', 'Kurunegala': 'North Western', 'Puttalam': 'North Western',
   'Anuradhapura': 'North Central', 'Polonnaruwa': 'North Central',
   'Badulla': 'Uva', 'Monaragala': 'Uva', 'Ratnapura': 'Sabaragamuwa', 'Kegalle': 'Sabaragamuwa'

@@ -115,7 +115,7 @@ Create a `.env` file inside `backend/`:
 
 ```env
 PORT=5000
-MONGO_URI=mongodb://localhost:27017/meditrend
+MONGO_URI=mongodb://localhost:27017/pharmacy_analytics_db
 JWT_SECRET=your_super_secret_key_here
 NODE_ENV=development
 ```
@@ -188,6 +188,20 @@ All **25 districts** covered:
 
 ---
 
+## 🗄️ Database
+
+**`pharmacy_analytics_db`** (MongoDB) collections:
+
+| Collection | Description |
+|------------|-------------|
+| `users` | System users with roles (Admin, Analyst, Pharmacy) |
+| `medicines` | Medicine catalog with disease links |
+| `diseases` | Disease registry (ICD codes, severity, symptoms) |
+| `pharmacies` | 25 pharmacies — one per Sri Lankan district |
+| `sales` | Sales transactions with analytics indexes |
+
+---
+
 ## 📡 API Reference
 
 ### Authentication
@@ -240,141 +254,3 @@ Licensed under the **MIT License** — see [LICENSE](LICENSE) for details.
 ---
 
 <p align="center">🇱🇰 Built for Sri Lanka's Healthcare System · MediTrend Analytics 2026</p>
-
-### Step 1 — Start Backend
-```bash
-cd backend
-npm install
-node seeders/seed.js    # Seeds database with Sri Lanka data
-npm run dev             # Starts API on http://localhost:5000
-```
-
-### Step 2 — Start Frontend
-```bash
-cd frontend
-npm install
-npm run dev             # Opens http://localhost:5173
-```
-
-Or use the `.bat` files (double-click):
-- `start-backend.bat`
-- `start-frontend.bat`
-
----
-
-## 🔑 Demo Login Credentials
-
-| Role | Email | Password |
-|------|-------|----------|
-| **Admin** | admin@pharmasys.lk | Admin@2026 |
-| **Pharmacy** | colombo@pharmasys.lk | Pharmacy@2026 |
-| **Analyst** | analyst@pharmasys.lk | Analyst@2026 |
-
----
-
-## 🏗️ Architecture
-
-```
-PharmaSys/
-├── backend/                    # Node.js + Express API
-│   ├── config/db.js            # MongoDB connection
-│   ├── models/                 # MongoDB Schemas
-│   │   ├── User.js
-│   │   ├── Medicine.js
-│   │   ├── Disease.js
-│   │   ├── Pharmacy.js
-│   │   └── Sale.js
-│   ├── controllers/            # Business logic
-│   ├── routes/                 # REST API endpoints
-│   ├── middleware/auth.js      # JWT authentication
-│   ├── seeders/seed.js         # Database seeder
-│   └── server.js
-│
-└── frontend/                   # React + Vite + Tailwind
-    └── src/
-        ├── pages/
-        │   ├── Login.jsx        # Auth screen
-        │   ├── Dashboard.jsx    # Main analytics dashboard
-        │   ├── SalesEntry.jsx   # Record new sale
-        │   ├── SalesHistory.jsx # View all sales
-        │   ├── Analytics.jsx    # Disease analytics
-        │   └── admin/           # Admin management pages
-        ├── components/          # Sidebar, Navbar, Layout
-        ├── context/             # Auth context
-        └── services/api.js      # Axios API service
-```
-
----
-
-## 📊 Features
-
-### Dashboard
-- Total Sales, Revenue, Active Pharmacies stats
-- Monthly Sales Trend (Area Chart)
-- Top 10 Medicines Distribution (Pie Chart)
-- Top Medicines Ranked by Quantity (Bar Chart)
-- Medicine → Disease Mapping Table
-- District filter
-
-### Disease Analytics
-- Most Common Diseases (estimated from medicine sales)
-- Disease Frequency Radar Chart
-- Disease Rankings with severity progress bars
-- District Heatmap (sales intensity by district)
-- Disease disclaimer banner
-
-### Sales Management
-- Record medicine sales (pharmacy role)
-- Filter sales by district, date range
-- Paginated sales history
-- Prescription tracking
-
-### Admin Panel
-- Manage Medicines with disease mapping
-- Manage Diseases (ICD codes, severity, symptoms)
-- Manage Pharmacies (all 25 Sri Lanka districts)
-- Manage Users (Admin, Pharmacy, Analyst roles)
-
----
-
-## 🗄️ Database: `pharmacy_analytics_db`
-
-Collections:
-- `users` — System users with roles
-- `medicines` — Medicine catalog with disease links
-- `diseases` — Disease registry
-- `pharmacies` — 25 pharmacies (one per district)
-- `sales` — Sales transactions with analytics indexes
-
----
-
-## 🔌 API Endpoints
-
-```
-POST   /api/auth/login
-GET    /api/auth/me
-
-GET    /api/analytics/dashboard
-GET    /api/analytics/diseases
-GET    /api/analytics/district-heatmap
-GET    /api/analytics/medicine-trend/:id
-GET    /api/analytics/disease-district
-
-GET/POST/PUT/DELETE  /api/sales
-GET/POST/PUT/DELETE  /api/medicines
-GET/POST/PUT/DELETE  /api/diseases
-GET/POST/PUT/DELETE  /api/pharmacies
-GET/POST/PUT/DELETE  /api/users
-```
-
----
-
-## ⚠️ Important Notice
-
-> Medicine sales data provides **trend estimation only**, not medical diagnosis.
-> Some medicines treat multiple diseases. Self-medication affects accuracy.
-> This system is for health monitoring and analytics purposes only.
-
----
-
-*Built with Node.js · Express · MongoDB · React · Tailwind CSS · Recharts*
